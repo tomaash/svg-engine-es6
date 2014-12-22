@@ -147,11 +147,12 @@ gulp.task('html', ['wiredep', 'injector:css', 'injector:js', 'partials'], functi
 
 gulp.task('images', function () {
   return gulp.src('src/assets/images/**/*')
-    .pipe($.imagemin({
-      optimizationLevel: 3,
-      progressive: true,
-      interlaced: true
-    }))
+    // Imagemin cannot be installed on heroku - skip
+    // .pipe($.imagemin({
+    //   optimizationLevel: 3,
+    //   progressive: true,
+    //   interlaced: true
+    // }))
     .pipe(gulp.dest('dist/assets/images/'));
 });
 
