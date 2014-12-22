@@ -12,5 +12,100 @@
     width: 50px;
   }
 }
+
+.gallery {
+  position: absolute;
+  top: 50px;
+  left: 700px;
+  border: 2px solid black;
+  height: 500px;
+  img {
+    margin: 10px;  
+  }
+}
+
+.spread {
+  float: left;
+  // margin-left: 20px;
+}
+
+.tools {
+   float: left;
+}
+
+.svgcontainer {
+  height: 800px;
+  width: 900px;
+}
+
+h3.output {
+  color: darkred;
+  text-align: center;
+}
+
+h1 {
+  font-family: serif;
+  font-weight: bold;
+  color: darkred;
+  // text-align: center;
+}
+
+
+.generate-font-sizes(160);
+
+.generate-font-sizes(@n, @i: 1) when (@i =< @n) {
+  .fontsize_@{i} {
+    font-size: (@i * 1px);
+  }
+  .generate-font-sizes(@n, (@i + 1));
+}
+
+.generate-font-sizessvg(160);
+
+.generate-font-sizessvg(@n, @i: 1) when (@i =< @n) {
+  .fontsizesvg_@{i} {
+    font-size: @i;
+  }
+  .generate-font-sizessvg(@n, (@i + 1));
+}
+
+.fontfamily_checkpoint {
+  font-family: "Checkpoint Regular";
+}
+.fontfamily_cochise {
+  font-family: "Cochise Regular";
+}
+.fontfamily_kaleidoskop {
+  font-family: "Kaleidoskop Regular";
+}
+.fontfamily_lifetime {
+  font-family: "Lifetime Regular";
+}
+.fontfamily_olympia-heavy {
+  font-family: "Olympia-Heavy Regular";
+}
+.fontfamily_olympia-mediumcond {
+  font-family: "Olympia-MediumCond Regular";
+}
+.fontfamily_sunflower {
+  font-family: "Sunflower Regular";
+}
+.fontfamily_tabascotwin {
+  font-family: "TabascoTwin Regular";
+}
+.fontfamily_times {
+    font-family: "Times";
+}
+.fontfamily_times-bold {
+    font-family: "Times-Bold";
+}
+.fontfamily_times-bold-italic { 
+    font-family: "Times-Bold Italic";
+}
+.fontfamily_times-italic {
+    font-family: "Times-Italic";
+}
+
 // injector
+@import 'fonts.less';
 // endinjector

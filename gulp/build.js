@@ -163,6 +163,12 @@ gulp.task('fonts', function () {
     .pipe(gulp.dest('dist/fonts/'));
 });
 
+gulp.task('balfour-fonts', function () {
+  return gulp.src('src/assets/fonts/**')
+    .pipe(gulp.dest('dist/assets/fonts'))
+    .pipe($.size());
+});
+
 gulp.task('misc', function () {
   return gulp.src('src/**/*.ico')
     .pipe(gulp.dest('dist/'));
@@ -172,4 +178,4 @@ gulp.task('clean', function (done) {
   $.del(['dist/', '.tmp/'], done);
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'misc']);
+gulp.task('build', ['html', 'images', 'fonts', 'balfour-fonts', 'misc']);

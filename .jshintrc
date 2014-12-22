@@ -30,6 +30,9 @@
     "beforeEach": false,
     "after": false,
     "afterEach": false,
-    "expect": false
+    "expect": false,
+    "document": true,
+    "rangy": true,
+    "$": true
   }
 }
