@@ -1,7 +1,6 @@
-'use strict';
-
-angular.module('svgTextEditor')
-  .directive('rectshape', function() {
+export
+default class RectShape {
+  constructor() {
     return {
       restrict: 'A',
       templateUrl: 'app/directives/rectshape/rectshape.template.html',
@@ -34,4 +33,5 @@ angular.module('svgTextEditor')
         $scope.context = $scope;
       }
     };
-  });
+  }
+}

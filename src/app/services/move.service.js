@@ -1,26 +1,21 @@
-'use strict';
+export
+default class Move {
+  constructor(Mouse) {
+    this.Mouse = Mouse;
+  }
 
-angular.module('svgTextEditor')
-  .factory('Move', function(Mouse) {
-    var currentShape, oldShape;
-    var start = function (shape) {
-      currentShape = shape;
-      oldShape = angular.copy(shape);
-    };
+  start(shape) {
+    this.currentShape = shape;
+    this.oldShape = angular.copy(shape);
+  }
 
-    var mouseMove = function () {
-      currentShape.x = oldShape.x + Mouse.state.deltaX;
-      currentShape.y = oldShape.y + Mouse.state.deltaY;
-    };
+  mouseMove() {
+    this.currentShape.x = this.oldShape.x + this.Mouse.state.deltaX;
+    this.currentShape.y = this.oldShape.y + this.Mouse.state.deltaY;
+  }
 
-    var finish = function () {
-      currentShape = null;
-      oldShape = null;
-    };
-
-    return {
-      start: start,
-      mouseMove: mouseMove,
-      finish: finish
-    };
-  });
+  finish() {
+    this.currentShape = null;
+    this.oldShape = null;
+  }
+}

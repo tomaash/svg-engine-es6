@@ -1,10 +1,9 @@
-'use strict';
-
-angular.module('svgTextEditor')
-  .directive('imgshape', function() {
+export
+default class ImgShape {
+  constructor() {
     return {
       restrict: 'A',
-      templateUrl: 'app/directives/rectshape/imgshape.template.html',
+      templateUrl: 'app/directives/imgshape/imgshape.template.html',
       replace: false,
       priority: 0,
       scope: {
@@ -34,4 +33,5 @@ angular.module('svgTextEditor')
         $scope.context = $scope;
       }
     };
-  });
+  }
+}

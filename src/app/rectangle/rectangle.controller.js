@@ -1,15 +1,19 @@
 'use strict';
+/*jshint esnext: true */
 
-angular.module('svgTextEditor')
-  .controller('RectangleCtrl', function($scope, Mouse, Move, Resize) {
+export
+default class MainCtrl {
+  constructor($scope, Mouse, Move, Resize) {
+    this.scope = $scope;
+    this.Mouse = Mouse;
+    this.Move = Move;
+    this.Resize = Resize;
 
-    $scope.Mouse = Mouse;
-
-    var TOOLS = {
+    this.TOOLS = {
       'resize': Resize
     };
 
-    var RECT_TEMPLATE = {
+    this.RECT_TEMPLATE = {
       shapeId: 123,
       shapeType: 'rectshape',
       x: 120,
@@ -42,7 +46,7 @@ angular.module('svgTextEditor')
       }
     };
 
-    $scope.shapes = {
+    this.shapes = {
       123: {
         shapeId: 123,
         shapeType: 'rectshape',
@@ -110,12 +114,12 @@ angular.module('svgTextEditor')
       }
     };
 
-    $scope.contexts = {
+    this.contexts = {
       123: {},
       124: {}
     };
 
-    $scope.galleryImages = [{
+    this.galleryImages = [{
       source: "schoolgirl.jpg",
       thumbnail: "schoolgirl_thumb.jpg"
     }, {
@@ -125,118 +129,118 @@ angular.module('svgTextEditor')
       source: "mugen.jpg",
       thumbnail: "mugen_thumb.jpg"
     }];
+  }
 
-    var getContext = function() {
-      if ($scope.currentShape) {
-        return $scope.contexts[$scope.currentShape.shapeId];
+  _getContext() {
+    if (this.currentShape) {
+      return this.contexts[this.currentShape.shapeId];
+    }
+  }
+
+  _getTool() {
+    return this.currentShape.toolState.service;
+  }
+
+  _setTool(tool) {
+    this.currentShape.toolState.service = tool;
+  }
+
+  _randomInt(radix) {
+    return Math.round(Math.random() * (radix || 1000000));
+  }
+
+  onDrop(data, event) {
+    console.log(data);
+    var x = event.offsetX;
+    var y = event.offsetY;
+    var newId = this._randomInt();
+    var newRect = angular.copy(this.RECT_TEMPLATE);
+    newRect.shapeId = newId;
+    newRect.width = 100;
+    newRect.height = 100;
+    newRect.x = x - 50;
+    newRect.y = y - 50;
+    newRect.href = '/assets/images/' + data['json/custom-object'];
+    newRect.shapeType = 'imgshape';
+    this.shapes[newId] = newRect;
+  }
+
+  onDragOver(data, event) {
+    // console.log(data);
+    // console.log(event);
+  }
+
+  addRect() {
+    var newId = this._randomInt();
+    var newRect = angular.copy(this.RECT_TEMPLATE);
+    newRect.shapeId = newId;
+    newRect.x = 2 * this._randomInt(100);
+    newRect.y = 2 * this._randomInt(100);
+    this.shapes[newId] = newRect;
+  }
+
+  removeSelected() {
+    delete this.shapes[this.currentShape.shapeId];
+  }
+
+  selectShape(e) {
+    if (e.target.dataset.id) {
+      this.currentShape = this.shapes[e.target.dataset.id] || this.shapes[e.target.dataset.parent];
+    }
+  }
+
+  mouseDown(e) {
+    this.Mouse.mouseDown(e);
+    if (this.currentShape && this.currentShape.shapeId &&
+      (e.target.dataset.id != this.currentShape.shapeId) &&
+      (e.target.dataset.parent != this.currentShape.shapeId)
+    ) {
+      this._getContext().hideTools();
+    }
+    this.selectShape(e);
+    if (e.target.dataset.type === 'tool') {
+      this._setTool(this.TOOLS[e.target.dataset.mode]);
+    } else if (e.target.dataset.type) {
+      this._setTool(this.Move);
+    } else {
+      return;
+    }
+    this._getTool().start(this.currentShape);
+  }
+
+  mouseUp(e) {
+    if (this.Mouse.state.moving) {
+      this._getContext().hideTools();
+      this._getTool().finish();
+    }
+    this.Mouse.mouseUp(e);
+  }
+
+  mouseMove(e) {
+    this.Mouse.mouseMove(e);
+    if (this.Mouse.state.down) {
+      if (this._getTool()) {
+        this._getTool().mouseMove();
+        this._getContext().updateToolPositions();
       }
-    };
+    }
+  }
 
-    var getTool = function() {
-      return $scope.currentShape.toolState.service;
-    };
-
-    var setTool = function(tool) {
-      $scope.currentShape.toolState.service = tool;
-    };
-
-    var randomInt = function(radix) {
-      return Math.round(Math.random() * (radix || 1000000));
-    };
-
-    $scope.onDrop = function(data, event) {
-      console.log(data);
-      var x = event.offsetX;
-      var y = event.offsetY;
-      var newId = randomInt();
-      var newRect = angular.copy(RECT_TEMPLATE);
-      newRect.shapeId = newId;
-      newRect.width = 100;
-      newRect.height = 100;
-      newRect.x = x - 50;
-      newRect.y = y - 50;
-      newRect.href = '/assets/images/' + data['json/custom-object'];
-      newRect.shapeType = 'imgshape';
-      $scope.shapes[newId] = newRect;
-    };
-
-    $scope.onDragOver = function(data, event) {
-      // console.log(data);
-      // console.log(event);
-    };
-
-    $scope.addRect = function() {
-      var newId = randomInt();
-      var newRect = angular.copy(RECT_TEMPLATE);
-      newRect.shapeId = newId;
-      newRect.x = 2 * randomInt(100);
-      newRect.y = 2 * randomInt(100);
-      $scope.shapes[newId] = newRect;
-    };
-
-    $scope.removeSelected = function() {
-      delete $scope.shapes[$scope.currentShape.shapeId];
-    };
-
-    $scope.selectShape = function(e) {
-      if (e.target.dataset.id) {
-        $scope.currentShape = $scope.shapes[e.target.dataset.id] || $scope.shapes[e.target.dataset.parent];
-      }
-    };
-
-    $scope.mouseDown = function(e) {
-      Mouse.mouseDown(e);
-      if ($scope.currentShape && $scope.currentShape.shapeId &&
-        (e.target.dataset.id != $scope.currentShape.shapeId) &&
-        (e.target.dataset.parent != $scope.currentShape.shapeId)
-      ) {
-        getContext().hideTools();
-      }
-      $scope.selectShape(e);
-      if (e.target.dataset.type === 'tool') {
-        setTool(TOOLS[e.target.dataset.mode]);
-      } else if (e.target.dataset.type) {
-        setTool(Move);
-      } else {
-        return;
-      }
-      getTool().start($scope.currentShape);
-    };
-
-    $scope.mouseUp = function(e) {
-      if (Mouse.state.moving) {
-        getContext().hideTools();
-        getTool().finish();
-      }
-      Mouse.mouseUp(e);
-    };
-
-    $scope.mouseMove = function(e) {
-      Mouse.mouseMove(e);
-      if (Mouse.state.down) {
-        if (getTool()) {
-          getTool().mouseMove();
-          getContext().updateToolPositions();
+  mouseClick(e) {
+    if (this.Mouse.click(e)) {
+      this.selectShape(e);
+      if (this._getContext()) {
+        if (!e.target.dataset.type) {
+          this._getContext().hideTools();
+        }
+        if (e.target.dataset.type === 'object') {
+          if (this.currentShape.toolState.on) {
+            this._getContext().hideTools();
+          } else {
+            this._getContext().showTools();
+          }
         }
       }
-    };
-
-    $scope.mouseClick = function(e) {
-      if (Mouse.click(e)) {
-        $scope.selectShape(e);
-        if (getContext()) {
-          if (!e.target.dataset.type) {
-            getContext().hideTools();
-          }
-          if (e.target.dataset.type === 'object') {
-            if ($scope.currentShape.toolState.on) {
-              getContext().hideTools();
-            } else {
-              getContext().showTools();
-            }
-          }
-        }
-      }
-    };
-
-  });
+    }
+  }
+}

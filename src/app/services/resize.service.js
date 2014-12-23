@@ -1,26 +1,21 @@
-'use strict';
+export
+default class Resize {
+  constructor(Mouse) {
+    this.Mouse = Mouse;
+  }
 
-angular.module('svgTextEditor')
-  .factory('Resize', function(Mouse) {
-    var currentShape, oldShape;
-    var start = function (shape) {
-      currentShape = shape;
-      oldShape = angular.copy(shape);
-    };
+  start(shape) {
+    this.currentShape = shape;
+    this.oldShape = angular.copy(shape);
+  }
 
-    var mouseMove = function () {
-      currentShape.width = oldShape.width + Mouse.state.deltaX;
-      currentShape.height = oldShape.height + Mouse.state.deltaY;
-    };
+  mouseMove() {
+    this.currentShape.width = this.oldShape.width + this.Mouse.state.deltaX;
+    this.currentShape.height = this.oldShape.height + this.Mouse.state.deltaY;
+  }
 
-    var finish = function () {
-      currentShape = null;
-      oldShape = null;
-    };
-
-    return {
-      start: start,
-      mouseMove: mouseMove,
-      finish: finish
-    };
-  });
+  finish() {
+    this.currentShape = null;
+    this.oldShape = null;
+  }
+}
