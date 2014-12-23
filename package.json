@@ -46,7 +46,6 @@
         "node": "0.10.32"
     },
     "scripts": {
-        "start": "node server.js",
-        "postinstall": "bower install && gulp build"
+        "start": "node server.js"
     }
 }
