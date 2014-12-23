@@ -6,7 +6,10 @@
         "karma-phantomjs-launcher": "~0.1.4",
         "browser-sync": "~1.7.1",
         "http-proxy": "~1.7.0",
-        "protractor": "~1.4.0"
+        "protractor": "~1.4.0",
+        "gulp-protractor": "~0.0.11",
+        "gulp-karma": "~0.0.4",
+        "gulp-sourcemaps": "^1.2.8"
     },
     "dependencies": {
         "gulp": "~3.8.10",
@@ -29,12 +32,9 @@
         "gulp-rev-replace": "~0.3.1",
         "gulp-minify-html": "~0.1.7",
         "gulp-inject": "~1.0.2",
-        "gulp-protractor": "~0.0.11",
-        "gulp-karma": "~0.0.4",
         "gulp-less": "~1.3.6",
         "gulp-6to5": "~1.0.2",
         "gulp-browserify": "~0.5.0",
-        "gulp-sourcemaps": "^1.2.8",
         "main-bower-files": "~2.4.0",
         "jshint-stylish": "~1.0.0",
         "wiredep": "~2.2.0",
