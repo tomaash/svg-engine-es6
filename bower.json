@@ -1,6 +1,6 @@
 {
-  "name": "testAngularGulp",
-  "version": "0.0.0",
+  "name": "svgEngine",
+  "version": "0.0.1",
   "dependencies": {
     "modernizr": "~2.8.3",
     "zeptojs": "~1.1.4",

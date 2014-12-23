@@ -103,7 +103,7 @@ gulp.task('partials', function () {
       quotes: true
     }))
     .pipe($.angularTemplatecache('templateCacheHtml.js', {
-      module: 'testAngularGulp'
+      module: 'svgEngine'
     }))
     .pipe(gulp.dest('.tmp/inject/'));
 });
