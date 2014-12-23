@@ -4,7 +4,6 @@
     "devDependencies": {
         "karma-jasmine": "~0.3.1",
         "karma-phantomjs-launcher": "~0.1.4",
-        "browser-sync": "~1.7.1",
         "http-proxy": "~1.7.0",
         "protractor": "~1.4.0",
         "gulp-protractor": "~0.0.11",
@@ -40,7 +39,8 @@
         "wiredep": "~2.2.0",
         "require-dir": "~0.1.0",
         "chalk": "~0.5.1",
-        "uglify-save-license": "~0.4.1"
+        "uglify-save-license": "~0.4.1",
+        "browser-sync": "~1.7.1"
     },
     "engines": {
         "node": "0.11.x"
