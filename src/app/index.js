@@ -15,7 +15,7 @@ import NavbarCtrl from '../components/navbar/navbar.controller';
 
 import Router from './router';
 
-angular.module('testAngularGulp', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'restangular', 'ui.router', 'ui.bootstrap', 'draganddrop'])
+angular.module('svgEngine', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'restangular', 'ui.router', 'ui.bootstrap', 'draganddrop'])
   .controller('MainCtrl', MainCtrl)
   .controller('NavbarCtrl', NavbarCtrl)
   .controller('RectangleCtrl', RectangleCtrl)
