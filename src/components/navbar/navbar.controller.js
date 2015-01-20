@@ -1,8 +1,6 @@
 'use strict';
-/*jshint esnext: true */
 
-export default class NavbarCtrl {
-  constructor ($scope) {
+angular.module('b4Editor')
+  .controller('NavbarCtrl', function ($scope) {
     $scope.date = new Date();
-  }
-}
+  });

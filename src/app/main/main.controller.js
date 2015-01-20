@@ -1,192 +1,240 @@
 'use strict';
-/*jshint esnext: true */
 
-export
-default class MainCtrl {
-  constructor($scope) {
-    this.scope = $scope;
-    this.sizes = [10, 12, 14, 18, 20, 24, 28, 36, 48, 60, 68, 80, 100, 148];
+angular.module('b4Editor')
+  .controller('MainCtrl', function($scope) {
+    $scope.sizes = [10, 12, 14, 18, 20, 24, 28, 36, 48, 60, 68, 80, 100, 148];
+    var fontSizeRemover = rangy.createCssClassApplier('\\s*fontsize_\\d{1,3}\\s*', {
+      normalize: true
+    });
+    var fontFamilyRemover = rangy.createCssClassApplier('\\s*fontfamily_[^_]+\\s*', {
+      normalize: true
+    });
+    $scope.fontDropdownOpened = false;
 
-    this.fontDropdownOpened = false;
 
-    this.fonts = [{
-      name: 'Checkpoint',
-      tag: 'checkpoint'
+    $scope.fonts = [{
+      name: "Checkpoint",
+      tag: "checkpoint"
     }, {
-      name: 'Cochise',
-      tag: 'cochise'
+      name: "Cochise",
+      tag: "cochise"
     }, {
-      name: 'Kaleidoskop',
-      tag: 'kaleidoskop'
+      name: "Kaleidoskop",
+      tag: "kaleidoskop"
     }, {
-      name: 'Lifetime',
-      tag: 'lifetime'
+      name: "Lifetime",
+      tag: "lifetime"
     }, {
-      name: 'Olympia-Heavy',
-      tag: 'olympia-heavy'
+      name: "Olympia-Heavy",
+      tag: "olympia-heavy"
     }, {
-      name: 'Olympia-MediumCond',
-      tag: 'olympia-mediumcond'
+      name: "Olympia-MediumCond",
+      tag: "olympia-mediumcond"
     }, {
-      name: 'Sunflower',
-      tag: 'sunflower'
+      name: "Sunflower",
+      tag: "sunflower"
     }, {
-      name: 'TabascoTwin',
-      tag: 'tabascotwin'
+      name: "TabascoTwin",
+      tag: "tabascotwin"
     }, {
-      name: 'Times',
-      tag: 'times'
+      name: "Times",
+      tag: "times"
     }];
 
-    // Wait one tick for Rangy init
-    setTimeout(() => {
-      this.fontSizeRemover = rangy.createCssClassApplier('\\s*fontsize_\\d{1,3}\\s*', {
-        normalize: true
-      });
-      this.fontFamilyRemover = rangy.createCssClassApplier('\\s*fontfamily_[^_]+\\s*', {
-        normalize: true
-      });
-      this.generateSVG();
-      this.attachPasteHandler();
-      this.editMode = true;
-    }, 0);
-  }
-
-  toggleBold() {
-    document.execCommand('bold', false, null);
-  }
-
-  toggleItalic() {
-    document.execCommand('italic', false, null);
-  }
-
-  toggleEditMode() {
-    this.editMode = true;
-  }
-
-  toggleSize() {
-    this.fontSizeRemover.undoToSelection();
-    var cssApplier = rangy.createCssClassApplier('fontsize_' + this.fontSize, {
-      normalize: true
-    });
-    cssApplier.applyToSelection();
-    this.fontSize = null;
-  }
-
-  toggleFont(family) {
-    this.fontFamilyRemover.undoToSelection();
-    var cssApplier = rangy.createCssClassApplier('fontfamily_' + family, {
-      normalize: true
-    });
-    cssApplier.applyToSelection();
-  }
-
-  convertSpan(item) {
-    var attrs = {};
-    if (item.className) {
-      var classes = item.className.split(/\s+/);
-      classes.forEach(function(c) {
-        var vals = c.split('_');
-        attrs[vals[0]] = vals[1];
-      });
-    }
-    attrs.text = item.innerHTML.replace(/&nbsp;/g, " ");
-    return attrs;
-  }
-
-  traverseSpans(node) {
-    var out = [];
-    var data = $(node).children();
-    data.each((index, item) => {
-      if ($(item).children().length > 0) {
-        var more = this.traverseSpans(item);
-        if (out.length > 0) {
-          out[out.length - 1].crlf = true;
-        }
-        out = out.concat(more);
-      } else {
-        var one = this.convertSpan(item);
-        out.push(one);
-      }
-    });
-    return out;
-  }
-
-  attachPasteHandler() {
-    $('#editor').on('paste', function() {
-      setTimeout(function() {
-
-        // Remove nested spans
-        var multispan = $("#editor span > span").parent();
-        var children = multispan.children();
-        multispan.replaceWith(children);
-
-        // Remove styles
-        var styles = $("#editor [style]");
-        styles.each(function(idx, elm) {
-          console.log(elm);
-          var fam, siz;
-          var span = $(elm);
-          var font = span.css('font-family');
-          var size = span.css('font-size');
-          if (font) {
-            fam = font.replace(/'/g, '').split(" ")[0].toLowerCase();
-          }
-          if (size) {
-            siz = parseInt(size, 10);
-          }
-          console.log(fam);
-          console.log(siz);
-          span.removeAttr('style');
-          span.attr('class', "fontfamily_" + fam + " fontsize_" + siz);
-        });
-      }, 0);
-    });
-  }
-
-  generateSVG() {
-    console.log(this);
-    var traverse = this.traverseSpans($('#editor'));
-    this.lines = [];
-    var lineTemplate = {
-      data: {
-        visible: false,
-        dy: 60
-      },
-      spans: []
+    $scope.toggleBold = function() {
+      document.execCommand('bold', false, null);
     };
-    var line = angular.copy(lineTemplate);
-    traverse.forEach((elm) => {
-      if (elm.text === '') {
-        elm.text = '';
-      }
-      line.spans.push(elm);
-      console.log(elm);
-      if (elm.crlf) {
-        this.lines.push(line);
-        line = angular.copy(lineTemplate);
-      }
-    });
-    if (line.spans.length > 0) {
-      this.lines.push(line);
-    }
-    this.editMode = false;
-    setTimeout(this.fixTspans.bind(this), 0);
-  }
 
-  fixTspans() {
-    $('#svgoutput').children().each((i, el) => {
-      var bbox = el.getBBox();
-      if (i === 0) {
-        this.lines[0].data.dy = bbox.height;
+    $scope.toggleItalic = function() {
+      document.execCommand('italic', false, null);
+    };
+
+    $scope.toggleEditMode = function() {
+      $scope.editMode = true;
+    };
+
+    $scope.toggleSize = function() {
+      var cssApplier = rangy.createCssClassApplier('fontsize_' + $scope.fontSize, {
+        normalize: true
+      });
+      fontSizeRemover.undoToSelection();
+      cssApplier.applyToSelection();
+      $scope.fontSize = null;
+    };
+
+    $scope.toggleFont = function(family) {
+      console.log(family);
+      var cssApplier = rangy.createCssClassApplier('fontfamily_' + family, {
+        normalize: true
+      });
+      fontFamilyRemover.undoToSelection();
+      cssApplier.applyToSelection();
+    };
+
+    $scope.toggleFontDropdown = function() {
+      console.log('toggle drop');
+      $scope.fontDropdownOpened = !$scope.fontDropdownOpened;
+    };
+
+    var convertSpan = function(item) {
+      var attrs = {};
+      if (item.className) {
+        var classes = item.className.split(/\s+/);
+        classes.forEach(function(c) {
+          var vals = c.split('_');
+          attrs[vals[0]] = vals[1];
+        });
       }
-      if (i > 0) {
-        console.log(bbox);
-        this.lines[i].data.dy = this.lines[i - 1].data.dy + bbox.height;
+      attrs.text = item.innerHTML.replace(/&nbsp;/g, " ");
+      // if (item.tagName.toLowerCase()==='br') {
+      //   attrs.crlf = true;
+      // }
+      return attrs;
+    };
+
+    // var traverseSpans = function(node, blocks, line) {
+    //   blocks = blocks || [];
+    //   line = line || [];
+    //   var toplevel = false;
+    //   if (!blocks.length && !line.length) {
+    //     toplevel = true;
+    //   }
+    //   var data = $(node).children();
+    //   var dirty = false;
+    //   data.each(function(index, item){
+    //     if (item.tagName.toLowerCase()==='div') {
+    //       blocks.push(line);
+    //       dirty = false;
+    //       line = [];
+    //       traverseSpans(item, blocks, line);
+    //       // return blocks;
+    //     } else {
+    //       line.push(convertSpan(item));
+    //       dirty = true;
+    //     }
+    //   });
+    //   if (toplevel) {
+    //     blocks.push(line);  
+    //   }
+    //   // return [blocks, line];
+    //   return blocks;
+    // };
+
+    var traverseSpans = function(node) {
+      var out = [];
+      var data = $(node).children();
+      data.each(function(index, item) {
+        if ($(item).children().length > 0) {
+          var more = traverseSpans(item);
+          if (out.length > 0) {
+            out[out.length - 1].crlf = true;
+          }
+          out = out.concat(more);
+        } else {
+          var one = convertSpan(item);
+          out.push(one);
+        }
+      });
+      return out;
+    };
+
+    var attachPasteHandler = function() {
+      $('#editor').on('paste', function() {
+        // Hard to make this work, does not divide elements
+        // console.log(e.target);
+        // var text = e.originalEvent.clipboardData.getData('Text');
+        // var prev = $(e.target);
+        // console.log(text);
+        // e.preventDefault();
+        // prev.after('<span class=' + prev.attr('class') + '>' + text + '</span>');
+        // console.log(e.originalEvent.clipboardData.getData('Text'));
+
+        // var element = this;
+
+        setTimeout(function() {
+
+          // Remove all manual styling from paste
+          // var text = $(element).html();
+          // text = text.replace(/style="[^"]+"/g);
+          // $(element).html(text);
+
+          // Remove nested spans
+          var multispan = $("#editor span > span").parent();
+          var children = multispan.children();
+          multispan.replaceWith(children);
+
+          // Remove styles
+          var styles = $("#editor [style]");
+          styles.each(function(idx, elm) {
+            console.log(elm);
+            var fam,siz;
+            var span = $(elm);
+            var font = span.css('font-family');
+            var size = span.css('font-size');
+            if (font) {
+              fam = font.replace(/'/g, '').split(" ")[0].toLowerCase();
+            }
+            if (size) {
+              siz = parseInt(size, 10);
+            }
+            console.log(fam);
+            console.log(siz);
+            span.removeAttr('style');
+            span.attr('class', "fontfamily_" + fam + " fontsize_" + siz);
+          });
+        }, 0);
+      });
+    };
+
+    $scope.generateSVG = function() {
+      var traverse = traverseSpans($('#editor'));
+      $scope.lines = [];
+      var lineTemplate = {
+        data: {
+          visible: false,
+          dy: 60
+        },
+        spans: []
+      };
+      var line = angular.copy(lineTemplate);
+      traverse.forEach(function(elm) {
+        if (elm.text === "") {
+          elm.text = "";
+        }
+        line.spans.push(elm);
+        console.log(elm);
+        if (elm.crlf) {
+          $scope.lines.push(line);
+          line = angular.copy(lineTemplate);
+        }
+      });
+      if (line.spans.length > 0) {
+        $scope.lines.push(line);
       }
-      this.lines[i].data.visible = true;
-    });
-    this.scope.$apply();
-    console.log(this.lines);
-  }
-}
+      $scope.editMode = false;
+      setTimeout($scope.fixTspans.bind(this), 0);
+    };
+
+    $scope.fixTspans = function() {
+      console.log("fix!");
+      $("#svgoutput").children().each(function(i, el) {
+        var bbox = el.getBBox();
+        if (i === 0) {
+          $scope.lines[0].data.dy = bbox.height;
+        }
+        if (i > 0) {
+          console.log(bbox);
+          $scope.lines[i].data.dy = $scope.lines[i - 1].data.dy + bbox.height;
+        }
+        $scope.lines[i].data.visible = true;
+      });
+      $scope.$apply();
+      console.log($scope.lines);
+    };
+
+    $scope.generateSVG();
+    attachPasteHandler();
+
+    $scope.editMode = true;
+
+  });

@@ -1,0 +1,180 @@
+<div class="container">
+	<h1>Shapes</h1>
+	<svg 
+	ng-mousedown="mouseDown($event)"
+	ng-mouseup="mouseUp($event)"
+	ng-mousemove="mouseMove($event)"
+	ng-click="mouseClick($event)"
+
+	height="600" 
+	width="600" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<g ng-repeat="(key, model) in shapes" track by $index>
+	<g shapes viewmodel="model" context="contexts[key]" ng-if="model.shapeType=='line'"></g>
+	<g shapes viewmodel="model" context="contexts[key]" ng-if="model.shapeType=='oval'"></g>
+	<g shapes viewmodel="model" context="contexts[key]" ng-if="model.shapeType=='rect'"></g>
+	<g shapes viewmodel="model" context="contexts[key]" ng-if="model.shapeType=='text'"></g>
+    </g>
+    <g ng-attr-transform="{{toolGroup.transform}}"
+	   ng-attr-visibility="{{toolGroup.visibility}}">
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="tl"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.tlX}}" 
+		ng-attr-y="{{toolGroup.tlY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="tm"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.tmX}}" 
+		ng-attr-y="{{toolGroup.tmY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="tr"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.trX}}" 
+		ng-attr-y="{{toolGroup.trY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="lm"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.lmX}}" 
+		ng-attr-y="{{toolGroup.lmY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="rm"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.rmX}}" 
+		ng-attr-y="{{toolGroup.rmY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="bl"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.blX}}" 
+		ng-attr-y="{{toolGroup.blY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="bm"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.bmX}}" 
+		ng-attr-y="{{toolGroup.bmY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="br"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolGroup.brX}}" 
+		ng-attr-y="{{toolGroup.brY}}" 
+		ng-attr-width="{{toolGroup.width}}" 
+		ng-attr-height="{{toolGroup.height}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</rect>
+	<circle
+		data-type="tool"
+		data-mode="rotate"
+		data-id="rot"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		r="7" 
+		ng-attr-cx="{{toolGroup.cx}}" 
+		ng-attr-cy="{{toolGroup.cy}}" 
+		ng-attr-fill="{{toolGroup.fill}}" 
+		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolGroup.stroke}}">
+	</circle>
+    </g>
+	<rect
+	  data-type="tool"
+      data-mode="rubberband"
+      data-id="tr"
+      data-parent="" 
+      fill="lightblue"
+	  fill-opacity=".5"
+      ng-attr-x="{{toolRB.x}}" 
+	  ng-attr-y="{{toolRB.y}}" 
+	  ng-attr-width="{{toolRB.width}}" 
+	  ng-attr-height="{{toolRB.height}}" 
+	  ng-attr-stroke-width="1"
+	  ng-attr-stroke="black"
+	</rect>
+    
+</svg>
+<div>
+	<button class="btn btn-mini btn-danger" ng-click="addLine()">Line</button>
+	<button class="btn btn-mini btn-danger" ng-click="addImage()">Image</button>
+	<button class="btn btn-mini btn-danger" ng-click="addOval()">Oval</button>
+	<button class="btn btn-mini btn-danger" ng-click="addRect()">Rectangle</button>
+	<button class="btn btn-mini btn-danger" ng-click="addText()">Text</button>
+</div>
+<br>
+<div>
+	Start X: {{Mouse.state.startX}} <br>
+	Start Y: {{Mouse.state.startY}} <br>
+	Current X: {{Mouse.state.currentX}} <br>
+	Current Y: {{Mouse.state.currentY}} <br>
+	dx: {{Mouse.state.deltaX}} <br>
+	dy: {{Mouse.state.deltaX}} <br>
+</div>
+</div>

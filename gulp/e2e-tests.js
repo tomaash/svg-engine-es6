@@ -11,14 +11,14 @@ gulp.task('webdriver-update', $.protractor.webdriver_update);
 
 gulp.task('webdriver-standalone', $.protractor.webdriver_standalone);
 
-function runProtractor (done) {
+gulp.task('protractor-only', ['webdriver-update', 'wiredep'], function (done) {
   var testFiles = [
     'test/e2e/**/*.js'
   ];
 
   gulp.src(testFiles)
     .pipe($.protractor.protractor({
-      configFile: 'protractor.conf.js',
+      configFile: 'test/protractor.conf.js',
     }))
     .on('error', function (err) {
       // Make sure failed tests cause gulp to exit non-zero
@@ -29,8 +29,8 @@ function runProtractor (done) {
       browserSync.exit();
       done();
     });
-}
+});
 
-gulp.task('protractor', ['protractor:src']);
-gulp.task('protractor:src', ['serve:e2e', 'webdriver-update'], runProtractor);
-gulp.task('protractor:dist', ['serve:e2e-dist', 'webdriver-update'], runProtractor);
+gulp.task('protractor', ['serve:e2e', 'protractor-only']);
+gulp.task('protractor:src', ['serve:e2e', 'protractor-only']);
+gulp.task('protractor:dist', ['serve:e2e-dist', 'protractor-only']);

@@ -1,23 +1,21 @@
 <!doctype html>
-<html class="no-js" ng-app="svgEngine">
+<html class="no-js" ng-app="b4Editor">
   <head>
     <meta charset="utf-8">
-    <title>SVG Engine</title>
+    <title>Balfour Editor</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    
+
     <!-- build:css({.tmp,src}) styles/vendor.css -->
     <link rel="stylesheet" href="app/vendor.css">
+
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
-    
 
     <!-- build:css({.tmp,src}) styles/app.css -->
-    <!-- inject:css -->
     <link rel="stylesheet" href="app/index.css">
-    <!-- endinject -->
     <!-- endbuild -->
 
     <!-- build:js scripts/modernizr.js -->
@@ -42,20 +40,27 @@
     <script src="../bower_components/lodash/dist/lodash.compat.js"></script>
     <script src="../bower_components/restangular/dist/restangular.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="../bower_components/rangy/rangy-core.js"></script>
     <script src="../bower_components/rangy/rangy-cssclassapplier.js"></script>
-    <script src="../bower_components/angular-draganddrop/angular-draganddrop.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:js({.tmp,src}) scripts/app.js -->
+    
     <!-- inject:js -->
-    <script src="app/index.js"></script>
+    <script src="/app/index.js"></script>
+    <script src="/app/directives/shapes/shapes.directive.js"></script>
+    <script src="/components/navbar/navbar.controller.js"></script>
+    <script src="/app/services/resize.service.js"></script>
+    <script src="/app/services/move.service.js"></script>
+    <script src="/app/services/mouse.service.js"></script>
+    <script src="/app/services/rubberband.service.js"></script>
+    <script src="/app/shapes/spread.controller.js"></script>
+    <script src="/app/main/main.controller.js"></script>
     <!-- endinject -->
 
+
     <!-- inject:partials -->
-    <!-- angular templates will be automatically converted in js and inserted here -->
     <!-- endinject -->
     <!-- endbuild -->
 

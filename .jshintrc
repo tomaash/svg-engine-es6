@@ -10,7 +10,7 @@
   "latedef": true,
   "newcap": true,
   "noarg": true,
-  "quotmark": "single",
+  "quotmark": false,
   "regexp": true,
   "undef": true,
   "unused": true,
@@ -21,16 +21,6 @@
   "validthis": true,
   "globals": {
     "angular": false,
-    // Angular Mocks
-    "inject": false,
-    // JASMINE
-    "describe": false,
-    "it": false,
-    "before": false,
-    "beforeEach": false,
-    "after": false,
-    "afterEach": false,
-    "expect": false,
     "document": true,
     "rangy": true,
     "$": true
