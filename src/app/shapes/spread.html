@@ -7,7 +7,7 @@
 	ng-click="mouseClick($event)"
 
 	height="600" 
-	width="600" 
+	width="1000" 
 	xmlns="http://www.w3.org/2000/svg" 
 	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<g ng-repeat="(key, model) in shapes" track by $index>
@@ -16,22 +16,8 @@
 	<g shapes viewmodel="model" context="contexts[key]" ng-if="model.shapeType=='rect'"></g>
 	<g shapes viewmodel="model" context="contexts[key]" ng-if="model.shapeType=='text'"></g>
     </g>
-    <g ng-attr-transform="{{toolGroup.transform}}"
-	   ng-attr-visibility="{{toolGroup.visibility}}">
-	<rect
-		data-type="tool"
-		data-mode="resize"
-		data-id="tl"
-		data-parent="123" 
-		fill="white"
-		fill-opacity="0"
-		ng-attr-x="{{toolGroup.tlX}}" 
-		ng-attr-y="{{toolGroup.tlY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
-	</rect>
+    <g ng-attr-transform="{{toolRRGroup.transform}}"
+	   ng-attr-visibility="{{toolRRGroup.visibility}}">
 	<rect
 		data-type="tool"
 		data-mode="resize"
@@ -39,12 +25,12 @@
 		data-parent="123" 
 		fill="white"
 		fill-opacity="0"
-		ng-attr-x="{{toolGroup.tmX}}" 
-		ng-attr-y="{{toolGroup.tmY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-x="{{toolRRGroup.tmX}}" 
+		ng-attr-y="{{toolRRGroup.tmY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</rect>
 	<rect
 		data-type="tool"
@@ -53,12 +39,12 @@
 		data-parent="123" 
 		fill="white"
 		fill-opacity="0"
-		ng-attr-x="{{toolGroup.trX}}" 
-		ng-attr-y="{{toolGroup.trY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-x="{{toolRRGroup.trX}}" 
+		ng-attr-y="{{toolRRGroup.trY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</rect>
 	<rect
 		data-type="tool"
@@ -67,12 +53,12 @@
 		data-parent="123" 
 		fill="white"
 		fill-opacity="0"
-		ng-attr-x="{{toolGroup.lmX}}" 
-		ng-attr-y="{{toolGroup.lmY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-x="{{toolRRGroup.lmX}}" 
+		ng-attr-y="{{toolRRGroup.lmY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</rect>
 	<rect
 		data-type="tool"
@@ -81,12 +67,12 @@
 		data-parent="123" 
 		fill="white"
 		fill-opacity="0"
-		ng-attr-x="{{toolGroup.rmX}}" 
-		ng-attr-y="{{toolGroup.rmY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-x="{{toolRRGroup.rmX}}" 
+		ng-attr-y="{{toolRRGroup.rmY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</rect>
 	<rect
 		data-type="tool"
@@ -95,12 +81,12 @@
 		data-parent="123" 
 		fill="white"
 		fill-opacity="0"
-		ng-attr-x="{{toolGroup.blX}}" 
-		ng-attr-y="{{toolGroup.blY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-x="{{toolRRGroup.blX}}" 
+		ng-attr-y="{{toolRRGroup.blY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</rect>
 	<rect
 		data-type="tool"
@@ -109,12 +95,12 @@
 		data-parent="123" 
 		fill="white"
 		fill-opacity="0"
-		ng-attr-x="{{toolGroup.bmX}}" 
-		ng-attr-y="{{toolGroup.bmY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-x="{{toolRRGroup.bmX}}" 
+		ng-attr-y="{{toolRRGroup.bmY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</rect>
 	<rect
 		data-type="tool"
@@ -123,12 +109,26 @@
 		data-parent="123" 
 		fill="white"
 		fill-opacity="0"
-		ng-attr-x="{{toolGroup.brX}}" 
-		ng-attr-y="{{toolGroup.brY}}" 
-		ng-attr-width="{{toolGroup.width}}" 
-		ng-attr-height="{{toolGroup.height}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-x="{{toolRRGroup.brX}}" 
+		ng-attr-y="{{toolRRGroup.brY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
+	</rect>
+	<rect
+		data-type="tool"
+		data-mode="resize"
+		data-id="tl"
+		data-parent="123" 
+		fill="white"
+		fill-opacity="0"
+		ng-attr-x="{{toolRRGroup.tlX}}" 
+		ng-attr-y="{{toolRRGroup.tlY}}" 
+		ng-attr-width="{{toolRRGroup.width}}" 
+		ng-attr-height="{{toolRRGroup.height}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+        ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</rect>
 	<circle
 		data-type="tool"
@@ -138,11 +138,11 @@
 		fill="white"
 		fill-opacity="0"
 		r="7" 
-		ng-attr-cx="{{toolGroup.cx}}" 
-		ng-attr-cy="{{toolGroup.cy}}" 
-		ng-attr-fill="{{toolGroup.fill}}" 
-		ng-attr-stroke-width="{{toolGroup['stroke-width']}}" 
-		ng-attr-stroke="{{toolGroup.stroke}}">
+		ng-attr-cx="{{toolRRGroup.cx}}" 
+		ng-attr-cy="{{toolRRGroup.cy}}" 
+		ng-attr-fill="{{toolRRGroup.fill}}" 
+		ng-attr-stroke-width="{{toolRRGroup['stroke-width']}}" 
+		ng-attr-stroke="{{toolRRGroup.stroke}}">
 	</circle>
     </g>
 	<rect
@@ -162,12 +162,16 @@
     
 </svg>
 <div>
-	<button class="btn btn-mini btn-danger" ng-click="addLine()">Line</button>
-	<button class="btn btn-mini btn-danger" ng-click="addImage()">Image</button>
-	<button class="btn btn-mini btn-danger" ng-click="addOval()">Oval</button>
-	<button class="btn btn-mini btn-danger" ng-click="addRect()">Rectangle</button>
-	<button class="btn btn-mini btn-danger" ng-click="addText()">Text</button>
+  <button class="btn btn-mini btn-danger" ng-click="addLine()">Line</button>
+  <button class="btn btn-mini btn-danger" ng-click="addImage()">Image</button>
+  <button class="btn btn-mini btn-danger" ng-click="addCircle()">Circle</button>
+  <button class="btn btn-mini btn-danger" ng-click="addOval()">Oval</button>
+  <button class="btn btn-mini btn-danger" ng-click="addRect()">Rectangle</button>
+  <button class="btn btn-mini btn-danger" ng-click="addText()">Text</button>
 </div>
+<br>
+<div>
+  <label>Mode</label><button class="btn btn-mini btn-danger" ng-click="changeMode()">Drop</button>
 <br>
 <div>
 	Start X: {{Mouse.state.startX}} <br>

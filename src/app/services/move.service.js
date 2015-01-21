@@ -9,17 +9,19 @@ angular.module('b4Editor')
     };
 
     var mouseMove = function () {
-      if (currentShape.shapeType === 'oval') {
-        currentShape.cx = oldShape.cx + Mouse.state.deltaX;
-        currentShape.cy = oldShape.cy + Mouse.state.deltaY;
-      } else if (currentShape.shapeType === 'line') {
-        currentShape.x1 = oldShape.x1 + Mouse.state.deltaX;
-        currentShape.y1 = oldShape.y1 + Mouse.state.deltaY;
-        currentShape.x2 = oldShape.x2 + Mouse.state.deltaX;
-        currentShape.y2 = oldShape.y2 + Mouse.state.deltaY;
-      } else {
-        currentShape.x = oldShape.x + Mouse.state.deltaX;
-        currentShape.y = oldShape.y + Mouse.state.deltaY;
+      if (currentShape.shapeType) {
+        if (currentShape.shapeType === 'oval') {
+          currentShape.cx = oldShape.cx + Mouse.state.deltaX;
+          currentShape.cy = oldShape.cy + Mouse.state.deltaY;
+        } else if (currentShape.shapeType === 'line') {
+          currentShape.x1 = oldShape.x1 + Mouse.state.deltaX;
+          currentShape.y1 = oldShape.y1 + Mouse.state.deltaY;
+          currentShape.x2 = oldShape.x2 + Mouse.state.deltaX;
+          currentShape.y2 = oldShape.y2 + Mouse.state.deltaY;
+        } else {
+          currentShape.x = oldShape.x + Mouse.state.deltaX;
+          currentShape.y = oldShape.y + Mouse.state.deltaY;
+        }
       }
     };
 
