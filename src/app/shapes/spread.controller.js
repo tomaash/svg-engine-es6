@@ -1,10 +1,9 @@
 'use strict';
 
-angular.module('b4Editor')
-.controller('SpreadCtrl', function($scope, Mouse, Move, Resize, Rubberband) {
-
+angular.module('b4Editor').controller('SpreadCtrl', function($scope, Mouse, Move, Resize, Rubberband) {
     $scope.Mouse = Mouse;
     $scope.tool = null;
+    $scope.shapeMode = 'Drop';
 
     var nextID = 3;
     var TOOLS = { 'resize': Resize };
@@ -33,10 +32,10 @@ angular.module('b4Editor')
       1: {
         shapeId: 1,
         shapeType: 'line',
-        x1: 50,
+        x1: 250,
         y1: 50,
-        x2: 80,
-        y2: 80,
+        x2: 380,
+        y2: 180,
         stroke: 'brown',
         'stroke-width': 2
       },
@@ -123,6 +122,10 @@ angular.module('b4Editor')
       $scope.shapes[id] = newRect;
     };
 
+    $scope.changeShapeMode = function() {
+      $scope.shapeMode = ($scope.shapeMode === 'Drop') ? 'Create' : 'Drop';
+    };
+
     $scope.selectShape = function(e) {
       if (e.target.dataset.id) {
         $scope.currentShape = $scope.shapes[e.target.dataset.id] || $scope.shapes[e.target.dataset.parent];
@@ -136,6 +139,7 @@ angular.module('b4Editor')
         setTool(Resize);
         $scope.toolRRGroup.id = e.target.dataset.id;
         $scope.toolRRGroup.mode = e.target.dataset.mode;
+        Resize.start($scope.currentShape, $scope.toolRRGroup);
       } else {
         if ($scope.currentShape && $scope.currentShape.shapeId &&
             (e.target.dataset.id !== $scope.currentShape.shapeId)) {
@@ -145,21 +149,22 @@ angular.module('b4Editor')
 
         if (e.target.dataset.type) {
           setTool(Move);
+          Move.start($scope.currentShape);
         } else {
-          setTool(null);
+          setTool(Rubberband);
+          Rubberband.start($scope.toolRB);
         }
       }
-
-      if (getTool())
-        getTool().start($scope.currentShape, $scope.toolRRGroup);
     };
 
     $scope.mouseUp = function(e) {
       if (Mouse.state.moving) {
-        getContext().hideTools();
         getTool().finish();
+        if ($scope.toolRRGroup.on) getContext().hideTools();
+        setTool(null);
       }
       Mouse.mouseUp(e);
+      
     };
 
     $scope.mouseMove = function(e) {
@@ -186,5 +191,5 @@ angular.module('b4Editor')
           }
         }
       }
-    }
+    };
   });

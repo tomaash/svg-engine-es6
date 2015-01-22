@@ -49,6 +49,7 @@ angular.module('b4Editor')
               $scope.toolGroup.cy = midY + offsetHalf * dx;
               //x3 = x1 + (offsetHalf)*dy;
               //y3 = y1 - (offsetHalf)*dx;
+
               //x4 = x1 - (N/2)*dy
               //y4 = y1 + (N/2)*dx
 

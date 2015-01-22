@@ -158,6 +158,7 @@
 	  ng-attr-height="{{toolRB.height}}" 
 	  ng-attr-stroke-width="1"
 	  ng-attr-stroke="black"
+      ng-attr-visibility="{{toolRB.visibility}}">
 	</rect>
     
 </svg>
@@ -171,7 +172,7 @@
 </div>
 <br>
 <div>
-  <label>Mode</label><button class="btn btn-mini btn-danger" ng-click="changeMode()">Drop</button>
+  <label>Mode</label><button class="btn btn-mini btn-danger" ng-click="changeShapeMode()">{{shapeMode}}</button>
 <br>
 <div>
 	Start X: {{Mouse.state.startX}} <br>

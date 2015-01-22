@@ -29,10 +29,11 @@ angular.module('b4Editor')
         };
 
 		var mouseDown = function(e) {
-			if (e.target.dataset.type) {
-				state.down = true;
-				setPosition(e, true);
-			}
+          state.down = true;
+          setPosition(e, true);
+          if (e.target.dataset.type) {
+            setPosition(e, true);
+          }
 		};
 
 		var mouseUp = function(e) {
@@ -44,11 +45,11 @@ angular.module('b4Editor')
 		};
 
 		var mouseMove = function(e) {
-			if (state.down) {
-				state.moving = true;
-				setPosition(e);
-				updateDelta(e);
-			}
+          if (state.down) {
+            state.moving = true;
+            setPosition(e);
+            updateDelta(e);
+          }
 		};
 
 		var click = function(e) {
