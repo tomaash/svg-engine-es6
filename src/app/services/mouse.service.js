@@ -1,8 +1,6 @@
 'use strict';
 
-angular.module('b4Editor')
-	.factory('Mouse', function() {
-
+angular.module('b4Editor').factory('Mouse', function() {
 		var state = {
 			down: false,
 			moving: false,
@@ -10,14 +8,18 @@ angular.module('b4Editor')
 			startY: 0,
 			currentX: 0,
 			currentY: 0,
+			lastX: 0,
+			lastY: 0,
 			deltaX: 0,
 			deltaY: 0
 		};
 
 		var setPosition = function(e, startFlag) {
 			if (startFlag) {
-				state.startX = e.offsetX;
-				state.startY = e.offsetY;
+              state.startX = e.offsetX;
+              state.startY = e.offsetY;
+              state.lastX = e.offsetX;
+              state.lastY = e.offsetY;
 			}
 			state.currentX = e.offsetX;
 			state.currentY = e.offsetY;

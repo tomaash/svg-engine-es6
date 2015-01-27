@@ -1,60 +1,35 @@
 'use strict';
 
-angular.module('b4Editor').controller('SpreadCtrl', function($scope, Mouse, Move, Resize, Rubberband) {
+angular.module('b4Editor').controller('SpreadCtrl', function($scope, LineTool, OvalTool, RectTool, 
+                                                             Mouse, Move, Resize, Rubberband) {
     $scope.Mouse = Mouse;
     $scope.tool = null;
     $scope.shapeMode = 'Drop';
+    $scope.mouseMode = 'select';
 
     var nextID = 3;
-    var TOOLS = { 'resize': Resize };
-
-    var LINE_TEMPLATE = {
-      shapeId: 0, shapeType: 'line',
-      x1: 0, y1: 0, x2: 0, y2: 0,
-      stroke: 'black', 'stroke-width': 1
-    };
-
-    var OVAL_TEMPLATE = {
-      shapeId: 0, shapeType: 'oval',
-      cx: 0, cy: 0, rx: 0, ry: 0,
-      fill: 'white', 'fill-opacity': "0",
-      stroke: 'black', 'stroke-width': 1
-    };
-
-    var RECT_TEMPLATE = {
-      shapeId: 0, shapeType: 'rect',
-      x: 0, y: 0, width: 50, height: 50,
-      fill: 'white', 'fill-opacity': "0",
-      stroke: 'black', 'stroke-width': 1
-    };
 
     $scope.shapes = {
       1: {
-        shapeId: 1,
-        shapeType: 'line',
-        x1: 250,
-        y1: 50,
-        x2: 380,
-        y2: 180,
-        stroke: 'brown',
-        'stroke-width': 2
+        shapeId: 1, shapeType: 'line', x1: 250, y1: 50, x2: 380, y2: 180,
+        stroke: 'brown', 'stroke-width': 2
       },
       2: {
-        shapeId: 2,
-        shapeType: 'rect',
-        x: 100,
-        y: 10,
-        width: 100,
-        height: 100,
-        fill: 'lightgreen',
-        stroke: 'brown',
-        'stroke-width': 10
+        shapeId: 2, shapeType: 'rect', x: 100, y: 10, width: 100, height: 100,
+        fill: 'lightgreen', stroke: 'brown', 'stroke-width': 10
       },
     };
 
     $scope.contexts = {
       1: {},
       2: {}
+    };
+
+    
+    $scope.toolMap = {
+    'line': LineTool,
+    'oval': OvalTool,
+    'rect': RectTool
     };
 
     $scope.toolRRGroup = { id: '', on: false, visibility: 'hidden', mode: false, isLine: false,
@@ -80,46 +55,46 @@ angular.module('b4Editor').controller('SpreadCtrl', function($scope, Mouse, Move
     };
 
     $scope.addLine = function() {
-      var newObj = angular.copy(LINE_TEMPLATE);
-      var id = nextID++;
-      newObj.shapeId = id;
-      newObj.x1 = 2 * randomInt(100);
-      newObj.y1 = 2 * randomInt(100);
-      newObj.x2 = 2 * randomInt(100);
-      newObj.y2 = 2 * randomInt(100);
-      console.log(newObj);
-      $scope.shapes[id] = newObj;
-    };
-
-    $scope.addCircle = function() {
-      var newObj = angular.copy(OVAL_TEMPLATE);
-      var id = nextID++;
-      newObj.shapeId = id;
-      newObj.cx = 2 * randomInt(100);
-      newObj.cy = randomInt(100);
-      newObj.rx = randomInt(100);
-      newObj.ry = newObj.rx;
-      $scope.shapes[id] = newObj;      
+      if ($scope.shapeMode === 'Drop') {
+        var id = nextID++;
+        var newObj = LineTool.newObj(id);
+        newObj.x1 = 2 * randomInt(100);
+        newObj.y1 = 2 * randomInt(100);
+        newObj.x2 = 2 * randomInt(100);
+        newObj.y2 = 2 * randomInt(100);
+        $scope.shapes[id] = newObj;
+      } else {
+        setTool(LineTool);
+      }
     };
 
     $scope.addOval = function() {
-      var newObj = angular.copy(OVAL_TEMPLATE);
-      var id = nextID++;
-      newObj.shapeId = id;
-      newObj.cx = 2 * randomInt(100);
-      newObj.cy = 2 * randomInt(100);
-      newObj.rx = randomInt(100);
-      newObj.ry = randomInt(100);
-      $scope.shapes[id] = newObj;      
+      if ($scope.shapeMode === 'Drop') {      
+        var id = nextID++;
+        var newObj = OvalTool.newObj(id);
+        newObj.cx = 2 * randomInt(100);
+        newObj.cy = 2 * randomInt(100);
+        newObj.rx = randomInt(100);
+        newObj.ry = randomInt(100);
+        $scope.shapes[id] = newObj;      
+      } else {
+        setTool(OvalTool);
+      }
     };
 
     $scope.addRect = function() {
-      var newRect = angular.copy(RECT_TEMPLATE);
-      var id = nextID++;
-      newRect.shapeId = id;
-      newRect.x = 2 * randomInt(100);
-      newRect.y = 2 * randomInt(100);
-      $scope.shapes[id] = newRect;
+      if ($scope.shapeMode === 'Drop') {      
+        var id = nextID++;
+        var newObj = RectTool.newObj(id);
+        newObj.shapeId = id;
+        newObj.x = 2 * randomInt(100);
+        newObj.y = 2 * randomInt(100);
+        newObj.width = 50;
+        newObj.height = 50;
+        $scope.shapes[id] = newObj;
+      } else { 
+        setTool(RectTool);
+      }
     };
 
     $scope.changeShapeMode = function() {
@@ -141,27 +116,41 @@ angular.module('b4Editor').controller('SpreadCtrl', function($scope, Mouse, Move
         $scope.toolRRGroup.mode = e.target.dataset.mode;
         Resize.start($scope.currentShape, $scope.toolRRGroup);
       } else {
-        if ($scope.currentShape && $scope.currentShape.shapeId &&
-            (e.target.dataset.id !== $scope.currentShape.shapeId)) {
-          getContext().hideTools();
-        }
-        $scope.selectShape(e);
-
-        if (e.target.dataset.type) {
-          setTool(Move);
-          Move.start($scope.currentShape);
+        var tool = getTool();
+        if (tool) {
+          
+          var id = nextID++;
+          var newObj = tool.newObj(id);
+          $scope.shapes[id] = newObj;
+          tool.setMode('create');
+          tool.activate(newObj);
+          tool.mouseDown(e);
         } else {
-          setTool(Rubberband);
-          Rubberband.start($scope.toolRB);
+          if ($scope.currentShape && $scope.currentShape.shapeId &&
+              (e.target.dataset.id !== $scope.currentShape.shapeId)) {
+            getContext().hideTools();
+          }
+          $scope.selectShape(e);
+          
+          if (e.target.dataset.type) {
+            $scope.mouseMode = 'move';
+            //setTool(Move);
+            //Move.start($scope.currentShape);
+          } else {
+            setTool(Rubberband);
+            Rubberband.start($scope.toolRB);
+          }
         }
       }
     };
 
     $scope.mouseUp = function(e) {
       if (Mouse.state.moving) {
-        getTool().finish();
+        var tool = getTool();
+        if (tool) tool.finish();
         if ($scope.toolRRGroup.on) getContext().hideTools();
         setTool(null);
+        $scope.mouseMode = 'select';
       }
       Mouse.mouseUp(e);
       
@@ -172,8 +161,18 @@ angular.module('b4Editor').controller('SpreadCtrl', function($scope, Mouse, Move
       if (Mouse.state.down) {
         if (getTool()) {
           getTool().mouseMove();
-          getContext().updateToolPositions();
+          //getContext().updateToolPositions();
+        } else if ($scope.mouseMode === 'move') {
+          var tool = $scope.toolMap[$scope.currentShape.shapeType];
+          tool.setObj($scope.currentShape);
+          var dx = Mouse.state.currentX - Mouse.state.lastX;
+          var dy = Mouse.state.currentY - Mouse.state.lastY;
+
+          var frame = tool.getFrame();
+          tool.setFrameXY(frame.x + dx, frame.y + dy);
         }
+        Mouse.state.lastX = Mouse.state.currentX;
+        Mouse.state.lastY = Mouse.state.currentY;
       }
     };
 
