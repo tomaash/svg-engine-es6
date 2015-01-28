@@ -3,14 +3,15 @@
 
 export
 default class MainCtrl {
-  constructor($scope, Mouse, Move, Resize) {
+  constructor($scope, Mouse, Move, Resize, Rotate) {
     this.scope = $scope;
     this.Mouse = Mouse;
     this.Move = Move;
     this.Resize = Resize;
 
     this.TOOLS = {
-      'resize': Resize
+      'resize': Resize,
+      'rotate': Rotate
     };
 
     this.RECT_TEMPLATE = {
@@ -18,6 +19,7 @@ default class MainCtrl {
       shapeType: 'rectshape',
       x: 120,
       y: 120,
+      angle: 0,
       width: 50,
       height: 50,
       fill: 'darkgreen',
@@ -52,6 +54,7 @@ default class MainCtrl {
         shapeType: 'rectshape',
         x: 10,
         y: 10,
+        angle: 0,
         width: 100,
         height: 100,
         fill: 'lightgreen',
@@ -84,6 +87,7 @@ default class MainCtrl {
         shapeType: 'rectshape',
         x: 80,
         y: 80,
+        angle: 0,
         width: 100,
         height: 100,
         fill: 'lightblue',
@@ -199,7 +203,9 @@ default class MainCtrl {
     }
     this.selectShape(e);
     if (e.target.dataset.type === 'tool') {
-      this._setTool(this.TOOLS[e.target.dataset.mode]);
+      var tool = this.TOOLS[e.target.dataset.mode];
+      console.log(tool);
+      this._setTool(tool);
     } else if (e.target.dataset.type) {
       this._setTool(this.Move);
     } else {
