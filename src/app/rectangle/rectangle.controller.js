@@ -54,6 +54,8 @@ default class MainCtrl {
         shapeType: 'rectshape',
         x: 10,
         y: 10,
+        midX: 50,
+        midY: 50,
         angle: 0,
         width: 100,
         height: 100,
@@ -87,6 +89,8 @@ default class MainCtrl {
         shapeType: 'rectshape',
         x: 80,
         y: 80,
+        midX: 50,
+        midY: 50,
         angle: 0,
         width: 100,
         height: 100,
@@ -204,7 +208,6 @@ default class MainCtrl {
     this.selectShape(e);
     if (e.target.dataset.type === 'tool') {
       var tool = this.TOOLS[e.target.dataset.mode];
-      console.log(tool);
       this._setTool(tool);
     } else if (e.target.dataset.type) {
       this._setTool(this.Move);

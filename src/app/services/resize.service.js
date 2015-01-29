@@ -7,11 +7,23 @@ default class Resize {
   start(shape) {
     this.currentShape = shape;
     this.oldShape = angular.copy(shape);
+    this.vector = null;
   }
 
   mouseMove() {
-    this.currentShape.width = this.oldShape.width + this.Mouse.state.deltaX;
-    this.currentShape.height = this.oldShape.height + this.Mouse.state.deltaY;
+    var deltaX = this.Mouse.state.deltaX;
+    var deltaY = this.Mouse.state.deltaY;
+    var finalDeltaX = deltaX;
+    var finalDeltaY = deltaY;
+    var angle = this.currentShape.angle;
+    if (this.currentShape.angle !== 0) {
+      this.vector = new Victor(deltaX, deltaY);
+      this.vector.rotateDeg(-angle);
+      finalDeltaX = this.vector.x;
+      finalDeltaY = this.vector.y;
+    }
+    this.currentShape.width = this.oldShape.width + finalDeltaX;
+    this.currentShape.height = this.oldShape.height + finalDeltaY;
   }
 
   finish() {
