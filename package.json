@@ -41,7 +41,7 @@
         "gulp-sourcemaps": "^1.2.8"
     },
     "engines": {
-        "node": "0.11.x"
+        "node": "0.10.13"
     },
     "scripts": {
         "start": "node server.js",
