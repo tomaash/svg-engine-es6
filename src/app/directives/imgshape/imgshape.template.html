@@ -6,6 +6,7 @@
 	ng-attr-y="{{viewmodel.y}}" 
 	ng-attr-width="{{viewmodel.width}}" 
 	ng-attr-height="{{viewmodel.height}}"
+	ng-attr-transform="rotate({{viewmodel.angle}},{{viewmodel.x}},{{viewmodel.y}})"
 	xlink:href="{{viewmodel.href}}"></image> 
 <rect
 	data-type="tool"
@@ -20,6 +21,7 @@
 	ng-attr-height="{{viewmodel.resizeTool.height}}" 
 	ng-attr-stroke-width="{{viewmodel.resizeTool['stroke-width']}}" 
 	ng-attr-stroke="{{viewmodel.resizeTool.stroke}}"
+	ng-attr-transform="rotate({{viewmodel.angle}},{{viewmodel.x}},{{viewmodel.y}})"
 	ng-attr-visibility="{{viewmodel.toolState.visibility}}">
 </rect>
 <circle
@@ -35,5 +37,6 @@
 	ng-attr-fill="{{viewmodel.rotateTool.fill}}" 
 	ng-attr-stroke-width="{{viewmodel.rotateTool['stroke-width']}}" 
 	ng-attr-stroke="{{viewmodel.rotateTool.stroke}}"
+	ng-attr-transform="rotate({{viewmodel.angle}},{{viewmodel.x}},{{viewmodel.y}})"
 	ng-attr-visibility="{{viewmodel.toolState.visibility}}">
 </circle>
